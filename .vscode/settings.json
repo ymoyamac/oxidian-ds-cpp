@@ -1,0 +1,13 @@
+{
+    "files.associations": {
+        "iostream": "cpp",
+        "node.h": "c",
+        "array": "cpp",
+        "string": "cpp",
+        "string_view": "cpp",
+        "vector": "cpp",
+        "ios": "cpp",
+        "__split_buffer": "cpp",
+        "deque": "cpp"
+    }
+}
