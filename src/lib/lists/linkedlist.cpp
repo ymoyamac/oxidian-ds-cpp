@@ -15,8 +15,8 @@ namespace linked_list {
     /**
      * El parametro ´size´ es el numero de nodos que tendra la ´LinkedList´
      */
-    LinkedList* init() {
-        LinkedList* ptr_ll = (LinkedList*) std::malloc(sizeof(LinkedList));
+    linkedlist_t* init() {
+        linkedlist_t* ptr_ll = (linkedlist_t*) std::malloc(sizeof(linkedlist_t));
         if (ptr_ll == NULL) {
             fprintf(stderr, "Error could not allocate memory in the system\n");
             exit(EXIT_FAILURE);
@@ -27,8 +27,8 @@ namespace linked_list {
         return ptr_ll;
     }
 
-    LinkedList* init(int* val) {
-        LinkedList* ptr_ll = (LinkedList*) std::malloc(sizeof(LinkedList));
+    linkedlist_t* init(int* val) {
+        linkedlist_t* ptr_ll = (linkedlist_t*) std::malloc(sizeof(linkedlist_t));
         if (ptr_ll == NULL) {
             fprintf(stderr, "Error could not allocate memory in the system\n");
             exit(EXIT_FAILURE);
@@ -39,8 +39,8 @@ namespace linked_list {
         return ptr_ll;
     }
 
-    void drop(LinkedList* list) {
-        simple_node::Node* tmp;
+    void drop(linkedlist_t* list) {
+        simple_node::node_t* tmp;
 
         while (list->head != nullptr) {
             tmp = list->head;
@@ -55,29 +55,29 @@ namespace linked_list {
         tmp = nullptr;
     }
 
-    int size(LinkedList* list) {
+    int size(linkedlist_t* list) {
         return list->size;
     }
 
-    void rprint_list(LinkedList* list) {
-        std::cout << "$ ";
-        while (list->head) {
-            std::cout << list->head->data;
-            if (list->head->next != nullptr) {
-                std::cout << ", ";
+    void rprint_list(linkedlist_t* list) {
+        simple_node::node_t* iter = simple_node::init(0);
+        iter = list->head;
+        printf("$ ");
+        while (iter) {
+            printf("%i", iter->data);
+            if (iter->next != nullptr) {
+                printf(", ");
             }
-            list->head = list->head->next;
+            iter = iter->next;
         }
-        std::cout << std::endl;
+        printf("\n");
     }
 
-    void push_back(LinkedList* list, int data) {
-        simple_node::Node* new_node = simple_node::init(data);
+    void push_back(linkedlist_t* list, int data) {
+        simple_node::node_t* new_node = simple_node::init(data);
         if (list->head == nullptr && list->tail == nullptr) {
             list->head = new_node;
-            assert(list->head->next == nullptr);
             list->tail = new_node;
-            assert(list->tail->next == nullptr);
         } else {
             while (list->tail->next != nullptr) {
                 list->tail = list->tail->next;
@@ -87,15 +87,13 @@ namespace linked_list {
         list->size++;
     }
 
-    void push_front(LinkedList* list, int data) {
-        simple_node::Node* new_node = simple_node::init(data);
+    void push_front(linkedlist_t* list, int data) {
+        simple_node::node_t* new_node = simple_node::init(data);
         if (list->head == nullptr && list->tail == nullptr) {
             list->head = new_node;
-            assert(list->head->next == nullptr);
             list->tail = new_node;
-            assert(list->tail->next == nullptr);
         } else {
-            simple_node::Node* current = simple_node::init(data);
+            simple_node::node_t* current = simple_node::init(data);
             current = list->head;
             list->head = new_node;
             list->head->next = current;
@@ -103,9 +101,57 @@ namespace linked_list {
         list->size++;
     }
 
-    void push_at(LinkedList* list, int data, int position) {
-        
+    void push_at(linkedlist_t* list, int data, int position) {
+        if (position < list->size && position > list->size) {
+            fprintf(stderr, "Error position not valid\n");
+            exit(EXIT_FAILURE);
+        }
+        int index = 0;
+        if (position == 0) {
+            push_front(list, data);
+            list->size++;
+            return;
+        }
+        simple_node::node_t* new_node = simple_node::init(data);
+        simple_node::node_t* iter = simple_node::init(0);
+        simple_node::node_t* temp = simple_node::init(0);
+        iter = list->head;
+        while(iter->next != nullptr) {
+            if (position - 1 == index) {
+                temp = iter->next;
+                iter->next = new_node;
+                new_node->next = temp;
+                break;
+            } else {
+                iter = iter->next;
+                index++;
+            }
+        }
+        list->size++;
     }
 
+    simple_node::node_t* pop(linkedlist_t* list) {
+        int index = 0;
+        simple_node::node_t* dropped = list->tail->next;
+        simple_node::node_t* iter = simple_node::init(0);
+        iter = list->head;
+        while(iter->next != nullptr) {
+            if (index == list->size - 2) {
+                list->tail = iter;
+                list->tail->next = nullptr;
+                break;
+            }
+            iter = iter->next;
+            index++;
+        }
+        list->size--;
+        return dropped;
+    }
+
+    simple_node::node_t* remove_at(linkedlist_t* list, int at) {
+
+
+        return nullptr;
+    }
 
 }
