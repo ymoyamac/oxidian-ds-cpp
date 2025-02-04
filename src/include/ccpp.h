@@ -14,8 +14,8 @@
  *
  *-------------------------------------------------------------------------
  */
-#ifndef _LIB_OXIDIAN_CCPP_H
-#define _LIB_OXIDIAN_CCPP_H
+#ifndef _CCPP_H
+#define _CCPP_H
 
 #include <iostream>
 #endif

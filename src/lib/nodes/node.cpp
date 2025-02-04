@@ -1,14 +1,14 @@
 #include "oxidian.h"
 
 namespace simple_node {
-    Node* init(int data) {
+    node_t* init(int data) {
         /**
          * La función ´malloc´ llama a un ´allocator´ para reservar memoria del tamaño
          * indicado con la función ´sizeof´, esta reserva de memoria no inicializa la
          * memoria asignada, es decir, que se pueden reutilizar los bloques de memoria
          * y contener "valores basura"
          */
-        Node* ptr_node = (Node*) std::malloc(sizeof(Node));
+        node_t* ptr_node = (node_t*) std::malloc(sizeof(node_t));
         /**
          * Si ´malloc´ no puede asignar la memoria retorna ´NULL´
          */
@@ -28,7 +28,7 @@ namespace simple_node {
         return ptr_node;
     }
 
-    void drop(Node* node) {
+    void drop(node_t* node) {
         /**
          * Libera un bloque de memoria previamente asignado. No hace nada si el puntero es NULL.
          * Después de llamar a free, el puntero debe ser asignado a NULL para evitar punteros
@@ -38,11 +38,11 @@ namespace simple_node {
         node = nullptr;
     }
 
-    int get_data(Node* node) {
+    int get_data(node_t* node) {
         return node->data;
     }
 
-    Node* get_next(Node* node) {
+    node_t* get_next(node_t* node) {
         return node->next;  
     }
 }
