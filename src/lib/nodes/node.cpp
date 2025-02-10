@@ -9,13 +9,13 @@ namespace simple_node {
          * i.e. memory blocks can be reused and contain “garbage values”.
 
          */
-        node_t* node = (node_t*) std::malloc(sizeof(node_t));
+        node_t* ptr_node = (node_t*) std::malloc(sizeof(node_t));
         /**
          * If ‘malloc’ cannot allocate the memory it returns ‘NULL’.
          */
-        if (node == NULL) {
+        if (ptr_node == nullptr) {
             fprintf(stderr, "Error could not allocate memory in the system\n");
-            return NULL;
+            return nullptr;
         }
         /**
          * The ‘malloc’ function does not modify the contents of the allocated memory,
@@ -24,22 +24,21 @@ namespace simple_node {
          * 
          * It is necessary to initialize the memory manually after making a memory allocation.
          */
-        node->data = data;
-        node->next = nullptr;
+        ptr_node->data = data;
+        ptr_node->next = nullptr;
 
         /**
-         * Se inicializan las funciones miembro de la struct node
+         * Callback members.
          */
-        node->get_data = &simple_node::get_data;
+        ptr_node->get_data = &simple_node::get_data;
 
-        return node;
+        return ptr_node;
     }
 
     void drop(node_t* node) {
         /**
-         * Libera un bloque de memoria previamente asignado. No hace nada si el puntero es NULL.
-         * Después de llamar a free, el puntero debe ser asignado a NULL para evitar punteros
-         * colgantes.
+         * Frees a previously allocated block of memory. Does nothing if the pointer is `NULL`.
+         * After calling `free`, the pointer must be set to `NULL` to avoid dangling pointers.
          */
         free(node);
         node = nullptr;
@@ -50,6 +49,9 @@ namespace simple_node {
     }
 
     static node_t* get_next(node_t* node) {
+        if (node == nullptr) {
+            return nullptr;
+        }
         return node->next;  
     }
 }

@@ -8,8 +8,6 @@
  *	  of the frontend interface libraries --- so we don't worry much about
  *	  polluting the namespace with lots of stuff...
  *
- *
- *
  * src/include/ccpp.h
  *
  *-------------------------------------------------------------------------

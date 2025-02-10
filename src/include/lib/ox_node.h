@@ -1,6 +1,8 @@
 /**
  * ox_node.h
+ * 
  * DOCUMENTATION:
+ * 
  *      The nodes are the fundamental unit to operate a data structure in ‘oxidian’.
  *      A node is a data structure that stores information of any type and only contains
  *      a reference to the next node.
@@ -23,7 +25,7 @@
  *          sizeof(node_t*): Size of the next pointer (same as void*).
  *          sizeof(void* (*)(node_t*)): Size of the function pointer (same as a normal pointer).
  * 
- *          Allocated memory:
+ *      Allocated memory:
  *          In 64-bit systems, each pointer occupies 8 bytes.
  * 
  *              +-------+-------+
