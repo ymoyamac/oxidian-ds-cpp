@@ -1,48 +1,57 @@
 #include "oxidian.h"
 
 namespace simple_node {
-    node_t* init(int data) {
+
+    node_t* init(void* data) {
         /**
-         * La función ´malloc´ llama a un ´allocator´ para reservar memoria del tamaño
-         * indicado con la función ´sizeof´, esta reserva de memoria no inicializa la
-         * memoria asignada, es decir, que se pueden reutilizar los bloques de memoria
-         * y contener "valores basura"
+         * The ‘malloc’ function calls an ‘allocator’ to reserve memory of the size indicated
+         * by the ‘sizeof’ function, this memory reservation does not initialize the allocated memory,
+         * i.e. memory blocks can be reused and contain “garbage values”.
+
          */
         node_t* ptr_node = (node_t*) std::malloc(sizeof(node_t));
         /**
-         * Si ´malloc´ no puede asignar la memoria retorna ´NULL´
+         * If ‘malloc’ cannot allocate the memory it returns ‘NULL’.
          */
-        if (ptr_node == NULL) {
+        if (ptr_node == nullptr) {
             fprintf(stderr, "Error could not allocate memory in the system\n");
-            exit(EXIT_FAILURE);
+            return nullptr;
         }
         /**
-         * La función ´malloc´ no modifica el contenido de la memoria asignada, es decir,
-         * no inicializa la memoria. ´malloc´ esta diseñado para ser rapido y eficiente,
-         * por lo tanto, omite este paso para ahorrar tiempo.
+         * The ‘malloc’ function does not modify the contents of the allocated memory,
+         * i.e. it does not initialize the memory. malloc' is designed to be fast and efficient,
+         * therefore, it omits this step to save time.
          * 
-         * Es necesario inicializar la memoria manualmente despues de hacer una asignacion
+         * It is necessary to initialize the memory manually after making a memory allocation.
          */
         ptr_node->data = data;
         ptr_node->next = nullptr;
+
+        /**
+         * Callback members.
+         */
+        ptr_node->get_data = &simple_node::get_data;
+
         return ptr_node;
     }
 
     void drop(node_t* node) {
         /**
-         * Libera un bloque de memoria previamente asignado. No hace nada si el puntero es NULL.
-         * Después de llamar a free, el puntero debe ser asignado a NULL para evitar punteros
-         * colgantes.
+         * Frees a previously allocated block of memory. Does nothing if the pointer is `NULL`.
+         * After calling `free`, the pointer must be set to `NULL` to avoid dangling pointers.
          */
         free(node);
         node = nullptr;
     }
 
-    int get_data(node_t* node) {
+    static void* get_data(node_t* node) {
         return node->data;
     }
 
-    node_t* get_next(node_t* node) {
+    static node_t* get_next(node_t* node) {
+        if (node == nullptr) {
+            return nullptr;
+        }
         return node->next;  
     }
 }
