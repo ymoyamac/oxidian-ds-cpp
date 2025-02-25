@@ -90,7 +90,11 @@ namespace linked_list {
      * Gets the data of a node where the position is indicated.
      */
     void* get(linkedlist_t* list, int index);
-    simple_node::node_t* remove(linkedlist_t* list, int at);
+
+    /**
+     * Remove a node from position and returns the data.
+     */
+    void* remove(linkedlist_t* list, int index);
 
 }
 

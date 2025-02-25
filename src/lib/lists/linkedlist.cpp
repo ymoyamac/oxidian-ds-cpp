@@ -139,14 +139,14 @@ namespace linked_list {
         list->size++;
     }
 
-    void push_at(linkedlist_t* list, void* data, int index) {
+    void push_at(linkedlist_t* list, void* data, int at) {
         /** If the position is greater than `size`, then the execution ends. */
-        if (index < list->size && index > list->size) {
+        if (at < list->size && at > list->size) {
             fprintf(stderr, "Error position not valid\n");
             return;
         }
         /** If the position is equals zero, then calls `push_front()`. */
-        if (index == 0) {
+        if (at == 0) {
             push_front(list, data);
             list->size++;
             return;
@@ -167,7 +167,7 @@ namespace linked_list {
          */
         iter = list->head;
         while(iter->next != nullptr) {
-            if (index - 1 == index) {
+            if (at - 1 == index) {
                 /**
                  * If the index is equal to the position minus one, then the temporary node is assigned the right part of the list.
                  * 
@@ -288,10 +288,61 @@ namespace linked_list {
         return iter->data;
     }
 
-    simple_node::node_t* remove(linkedlist_t* list, int at) {
-
-
-        return nullptr;
+    void* remove(linkedlist_t* list, int at) {
+        /** If the index is greater than or equal to the list size, `NULL` is returned. */
+        if (!list || at < 0 || at >= list->size) {
+            fprintf(stderr, "Error position not valid\n");
+            return nullptr;
+        }
+        void* data;
+        simple_node::node_t* iter = simple_node::init(0);
+        simple_node::node_t* temp = simple_node::init(0);
+        if (at == 0 && list->size == 1) {
+            list->head = nullptr;
+            list->tail = nullptr;
+            free(iter);
+            free(temp);
+            iter = nullptr;
+            temp = nullptr;
+            list->size--;
+            return data;
+        }
+        if (at == 0) {
+            list->head = list->head->next;
+            data = list->head->data;
+            free(iter);
+            free(temp);
+            iter = nullptr;
+            temp = nullptr;
+            list->size--;
+            return data;
+        } else {
+            iter = list->head;
+            for (size_t i = 0; i < at - 1; i++) {
+                iter = iter->next;
+            }
+            /**
+             * Iterate over the list until the index minus one is reached, obtain the data of the node to be removed,
+             * and assign to the iterator node the value of the temporary node which contains the rest of the list.
+             * 
+             * Linkedlist
+             * +-------------------------------------------------------------------------------------------+
+             * |  Head                  Iter                                         Temp, Tail
+             * |  +-------+--------+    +-------+--------+    +-------+--------+     +-------+--------+
+             * |  | data  |  next  +--->| data  |  next  +-+  | data  |  next  |  +->| data  |  next  +--->
+             * |  +-------+--------+    +-------+--------+ |  +-------+--------+  |  +-------+--------+
+             * +-------------------------------------------|----------------------|------------------------+
+             *                                             +----------------------+
+             */
+            data = iter->next->data;
+            temp = iter->next->next;
+            iter->next = temp;
+            if (at == list->size - 1) {
+                list->tail = temp;
+            }
+        }
+        list->size--;
+        return data;
     }
 
 }
