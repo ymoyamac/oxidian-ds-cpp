@@ -44,7 +44,7 @@
 
 #include "oxidian.h"
 
-namespace simple_node {
+namespace node {
 
     /**
      * Opaque type representing a generic node.
