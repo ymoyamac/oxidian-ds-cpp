@@ -10,6 +10,7 @@ SRCDIR = src
 SUBDIRS = \
     nodes \
     lists \
+    queues \
 
 # Executable
 TARGET = main.o
@@ -17,11 +18,13 @@ TARGET = main.o
 # Dependencies and objects
 _DEPS = \
     node.cpp \
-    linkedlist.cpp
+    linkedlist.cpp \
+    queue.cpp \
 
 DEPS = \
     $(SRCDIR)/lib/nodes/node.cpp \
     $(SRCDIR)/lib/lists/linkedlist.cpp \
+    $(SRCDIR)/lib/queues/queue.cpp \
     $(SRCDIR)/main.cpp
 
 # Regla principal

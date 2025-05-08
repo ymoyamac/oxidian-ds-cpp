@@ -1,6 +1,6 @@
 #include "oxidian.h"
 
-namespace simple_node {
+namespace node {
 
     node_t* init(void* data) {
         /**
@@ -30,7 +30,7 @@ namespace simple_node {
         /**
          * Callback members.
          */
-        ptr_node->get_data = &simple_node::get_data;
+        ptr_node->get_data = &node::get_data;
 
         return ptr_node;
     }
