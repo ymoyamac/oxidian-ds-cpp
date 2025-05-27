@@ -1,4 +1,4 @@
-#include "oxidian.h"
+#include <oxidian.h>
 
 namespace node {
 

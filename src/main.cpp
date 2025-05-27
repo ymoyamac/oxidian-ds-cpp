@@ -1,12 +1,10 @@
-#include "oxidian.h"
+#include <oxidian.h>
 
 int main() {
 
-    int first = 10;
-    void* data = &first;
-    node::node_t* nn = node::init(data);
+    std::string key = "refe";
+    size_t h = collection::hash(key);
+    printf("Hash: %lu\n", h);
 
-    printf("Data: %i", *(int*)nn->get_data(nn));
-
-    return 0;
+    return 0;   
 }

@@ -5,5 +5,6 @@
 #include "lib/ox_node.h"
 #include "lib/ox_linkedlist.h"
 #include "lib/ox_queue.h"
+#include "lib/ox_hash_map.h"
 
 #endif

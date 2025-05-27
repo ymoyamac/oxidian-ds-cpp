@@ -14,7 +14,7 @@
 #ifndef _OX_QUEUE_H
 #define _OX_QUEUE_H
 
-#include "oxidian.h"
+#include <oxidian.h>
 
 namespace queue {
 
