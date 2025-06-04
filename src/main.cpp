@@ -1,10 +1,17 @@
-#include <oxidian.h>
+#include <oxidian.hpp>
 
 int main() {
 
-    std::string key = "refe";
-    size_t h = collection::hash(key);
-    printf("Hash: %lu\n", h);
+    
+    ox::hashmap::HashMap<std::string, std::string>* map = ox::hashmap::create_map<std::string, std::string>();
+
+    ox::hashmap::set<std::string, std::string>(map, "aaabc", "Rar!");
+    ox::hashmap::set<std::string, std::string>(map, "Hola", "Mundo");
+    ox::hashmap::set<std::string, std::string>(map, "Holaa", "Mundo");
+
+    std::optional<std::string> value_opt = ox::hashmap::get<std::string, std::string>(map, "aaabc");
+    std::optional<std::string> value_two_opt = ox::hashmap::get<std::string, std::string>(map, "Hola");
+
 
     return 0;   
 }

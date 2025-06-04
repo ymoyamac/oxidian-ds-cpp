@@ -37,9 +37,9 @@
 #ifndef _OX_LINKEDLIST_H
 #define _OX_LINKEDLIST_H
 
-#include <oxidian.h>
+#include <oxidian.hpp>
 
-namespace linked_list {
+namespace ox::linked_list {
 
     /**
      * Opaque type representing a `linked-list`.

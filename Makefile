@@ -2,7 +2,7 @@
 CC = g++
 
 # Compiler options
-CFLAGS = -I src/include
+CFLAGS = -std=c++17 -I src/include
 OFLAGS = -o
 #OFLAGS = -Wall -Wextra -o
 
@@ -20,15 +20,15 @@ TARGET = main.o
 # Dependencies and objects
 _DEPS = \
     node.cpp \
-    linkedlist.cpp \
+    linked_list.cpp \
     queue.cpp \
-    hashmap.cpp \
+    hash_map.cpp \
 
 DEPS = \
     $(SRCDIR)/lib/nodes/node.cpp \
-    $(SRCDIR)/lib/lists/linkedlist.cpp \
+    $(SRCDIR)/lib/lists/linked_list.cpp \
     $(SRCDIR)/lib/queues/queue.cpp \
-    $(SRCDIR)/lib/collections/hashmap.cpp \
+    $(SRCDIR)/lib/hash/hash_map.cpp \
     $(SRCDIR)/main.cpp
 
 # Regla principal

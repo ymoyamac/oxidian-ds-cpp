@@ -14,9 +14,9 @@
 #ifndef _OX_QUEUE_H
 #define _OX_QUEUE_H
 
-#include <oxidian.h>
+#include <oxidian.hpp>
 
-namespace queue {
+namespace ox::queue {
 
     typedef struct {
         node::node_t* front;

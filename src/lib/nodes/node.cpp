@@ -1,6 +1,6 @@
-#include <oxidian.h>
+#include <oxidian.hpp>
 
-namespace node {
+namespace ox::node {
 
     node_t* init(void* data) {
         /**
