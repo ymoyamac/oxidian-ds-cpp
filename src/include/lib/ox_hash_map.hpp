@@ -10,7 +10,7 @@ namespace ox::hashmap {
     
     template<typename K, typename V>
     struct HashMap {
-        std::array<ox::bucket::Bucket<K, V>*, INITIAL_CAPACITY> buckets;
+        std::array<ox::container::Container<K, V>*, INITIAL_CAPACITY> container;
         size_t capacity = INITIAL_CAPACITY;
         size_t size = 0;
     };
@@ -30,19 +30,21 @@ namespace ox::hashmap {
     template<typename K, typename V>
     void set(HashMap<K, V>* map, K key, V value) {
         size_t index = hash(key);
+        printf("%lu: { \"%s\": \"%s\" }\n", index, key.c_str(), value.c_str());
 
-        if (map->buckets[index] != NULL) {
-
-            
-
+        if (map->container[index] == NULL) {
+            ox::container::Container<K, V>* container = ox::container::init<K, V>();
+            ox::container::push_back(container, key, value);
+            map->container[index] = container;
             return;
-            
         }
         
-        ox::bucket::Bucket<K, V>* bucket = ox::bucket::create_bucket(index, key, value);
-       
-        map->buckets[index] = bucket;
-        map->size += 1;
+        if (map->container[index] != NULL) {
+            ox::container::Container<K, V>* on_use = map->container[index];
+            ox::container::push_back(on_use, key, value);
+            return;
+        }
+
     }
 
     template<typename K, typename V>
@@ -50,13 +52,17 @@ namespace ox::hashmap {
         size_t index = hash(key);
         printf("Searching: %lu\n", index);
 
-        if (map->buckets[index] == NULL) {
-            printf("No such element...\n");
+        if (map->container[index] == NULL) {
+            printf("There is no element for this key...\n");
             return {};
         }
-        ox::bucket::Bucket<K, V>* bucket = map->buckets[index];
+
+        ox::bucket::Bucket<K, V>* bucket = ox::container::get(map->container[index], key);
         V value = bucket->value;
         return std::optional<V>{value};
+
+        //ox::bucket::Bucket<K, V>* bucket = map->container[index];
+        
     }
     
 }
