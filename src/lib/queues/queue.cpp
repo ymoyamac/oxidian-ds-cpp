@@ -1,6 +1,6 @@
-#include <oxidian.h>
+#include <oxidian.hpp>
 
-namespace queue {
+namespace ox::queue {
 
     queue_t* init() {
         queue_t* ptr_queue = (queue_t*) std::malloc(sizeof(queue_t));

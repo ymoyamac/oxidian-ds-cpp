@@ -1,12 +1,18 @@
-#include "oxidian.h"
+#include <oxidian.hpp>
 
 int main() {
 
-    int first = 10;
-    void* data = &first;
-    node::node_t* nn = node::init(data);
+    
+    ox::hashmap::HashMap<std::string, std::string>* map = ox::hashmap::create_map<std::string, std::string>();
 
-    printf("Data: %i", *(int*)nn->get_data(nn));
+    ox::hashmap::set<std::string, std::string>(map, "Ror!", "Rar!");
+    ox::hashmap::set<std::string, std::string>(map, "Ping", "Pong");
+    ox::hashmap::set<std::string, std::string>(map, "Buzz", "Bass");
 
-    return 0;
+    std::optional<std::string> word = ox::hashmap::get<std::string, std::string>(map, "Buzz");
+
+    printf("Value: %s\n", word.value().c_str());
+
+
+    return 0;   
 }

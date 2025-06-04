@@ -1,7 +1,7 @@
-#include "oxidian.h"
+#include <oxidian.hpp>
 #define SIZE 3
 
-namespace linked_list {
+namespace ox::linked_list {
     
     linkedlist_t* init() {
         linkedlist_t* ptr_ll = (linkedlist_t*) std::malloc(sizeof(linkedlist_t));
@@ -21,7 +21,7 @@ namespace linked_list {
      * Frees the memory of a `linked-list` and its `nodes`.
      */
     void drop(linkedlist_t* list) {
-        node::node_t* tmp;
+        ox::node::node_t* tmp;
 
         while (list->head != nullptr) {
             tmp = list->head;
@@ -41,7 +41,7 @@ namespace linked_list {
 
     void rprint_list(linkedlist_t* list) {
         int index = 0;
-        node::node_t* iter = node::init(0);
+        ox::node::node_t* iter = ox::node::init(0);
         iter = list->head;
         printf("$ ");
         while (iter) {
@@ -59,7 +59,7 @@ namespace linked_list {
 
     void push_back(linkedlist_t* list, void* data) {
         /** A new node is created with the data to be stored. */
-        node::node_t* new_node = node::init(data);
+        ox::node::node_t* new_node = ox::node::init(data);
         /**
          * If the list is empty, then head and tail points to new_node
          *
@@ -97,7 +97,7 @@ namespace linked_list {
 
     void push_front(linkedlist_t* list, void* data) {
         /** A new node is created with the data to be stored. */
-        node::node_t* new_node = node::init(data);
+        ox::node::node_t* new_node = ox::node::init(data);
         /**
          * If the list is empty, then head and tail points to new_node
          *
@@ -152,10 +152,10 @@ namespace linked_list {
             return;
         }
         int index = 0;
-        node::node_t* new_node = node::init(data);
+        ox::node::node_t* new_node = ox::node::init(data);
         /** A new node is created to iterate over the list. */
-        node::node_t* iter = node::init(0);
-        node::node_t* temp = node::init(0);
+        ox::node::node_t* iter = ox::node::init(0);
+        ox::node::node_t* temp = ox::node::init(0);
         /**
          * The node starts at the beginning of the list, it is assigned the node of head.
          * 
@@ -213,7 +213,7 @@ namespace linked_list {
         /** the data to be removed from the list is obtained in a pointer `(void*)`. */
         void* dropped = list->tail->next->data;
         /** A new node is created to iterate over the list. */
-        node::node_t* iter = node::init(0);
+        ox::node::node_t* iter = ox::node::init(0);
         /**
          * The iteration starts at the beginning of the list, the iter node is assigned the head node.
          * 
@@ -280,7 +280,7 @@ namespace linked_list {
         if (!list || index >= list->size) {
             return nullptr;
         }
-        node::node_t* iter = list->head;
+        ox::node::node_t* iter = list->head;
         /** The list is traversed until the position in the list is reached and the data is returned. */
         for (size_t i = 0; i < index; i++) {
             iter = iter->next;
@@ -295,8 +295,8 @@ namespace linked_list {
             return nullptr;
         }
         void* data;
-        node::node_t* iter = node::init(0);
-        node::node_t* temp = node::init(0);
+        ox::node::node_t* iter = ox::node::init(0);
+        ox::node::node_t* temp = ox::node::init(0);
         if (at == 0 && list->size == 1) {
             list->head = nullptr;
             list->tail = nullptr;
