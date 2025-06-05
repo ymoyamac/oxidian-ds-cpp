@@ -5,7 +5,7 @@
 
 namespace ox::hashmap {
 
-    const uint INITIAL_CAPACITY = 5;
+    const uint INITIAL_CAPACITY = 64;
     const double LOAD_FACTOR = 0.75;
     
     template<typename K, typename V>
@@ -24,24 +24,33 @@ namespace ox::hashmap {
 
     template<typename K, typename V>
     HashMap<K, V>* create_map() {
-        return (HashMap<K, V>*) std::malloc(sizeof(HashMap<K, V>));
+        HashMap<K, V>* map = (HashMap<K, V>*) std::malloc(sizeof(HashMap<K, V>));
+        for (int i = 0; i <= map->capacity; i++) {
+            map->container[i] = nullptr;
+        }
+        return map;
     }
 
     template<typename K, typename V>
     void set(HashMap<K, V>* map, K key, V value) {
         size_t index = hash(key);
-        printf("%lu: { \"%s\": \"%s\" }\n", index, key.c_str(), value.c_str());
 
-        if (map->container[index] == NULL) {
-            ox::container::Container<K, V>* container = ox::container::init<K, V>();
-            ox::container::push_back(container, key, value);
-            map->container[index] = container;
+        if (map->container[index] == nullptr) {
+            ox::container::Container<K, V>* new_container = ox::container::init<K, V>();
+            ox::container::push_back(new_container, key, value);
+            map->container[index] = new_container;
+            ox::container::fmt(map->container[index], index);
             return;
-        }
-        
-        if (map->container[index] != NULL) {
-            ox::container::Container<K, V>* on_use = map->container[index];
-            ox::container::push_back(on_use, key, value);
+        } else {
+            std::pair<ox::bucket::Bucket<K, V>*, int> bucket = ox::container::get(map->container[index], key);
+            if (bucket.first->key == key) {
+                ox::container::remove(map->container[index], key, bucket.second);
+                ox::container::push_back(map->container[index], key, value);
+                ox::container::fmt(map->container[index], index);
+                return;
+            }
+            ox::container::push_back(map->container[index], key, value);
+            ox::container::fmt(map->container[index], index);
             return;
         }
 
@@ -50,19 +59,16 @@ namespace ox::hashmap {
     template<typename K, typename V>
     std::optional<V> get(HashMap<K, V>* map, K key) {
         size_t index = hash(key);
-        printf("Searching: %lu\n", index);
+        printf("Searching: (%lu) %s\n", index, key.c_str());
 
         if (map->container[index] == NULL) {
             printf("There is no element for this key...\n");
             return {};
         }
 
-        ox::bucket::Bucket<K, V>* bucket = ox::container::get(map->container[index], key);
-        V value = bucket->value;
+        std::pair<ox::bucket::Bucket<K, V>*, int> bucket = ox::container::get(map->container[index], key);
+        V value = bucket.first->value;
         return std::optional<V>{value};
-
-        //ox::bucket::Bucket<K, V>* bucket = map->container[index];
-        
     }
     
 }

@@ -5,14 +5,30 @@ int main() {
     
     ox::hashmap::HashMap<std::string, std::string>* map = ox::hashmap::create_map<std::string, std::string>();
 
+    printf("++++++++++++++++++++++++\n");
     ox::hashmap::set<std::string, std::string>(map, "Ror!", "Rar!");
+    printf("++++++++++++++++++++++++\n");
     ox::hashmap::set<std::string, std::string>(map, "Ping", "Pong");
+    printf("++++++++++++++++++++++++\n");
     ox::hashmap::set<std::string, std::string>(map, "Buzz", "Bass");
+    printf("++++++++++++++++++++++++\n");
+    //ox::hashmap::set<std::string, std::string>(map, "Hello", "Bass");
+    ox::hashmap::set<std::string, std::string>(map, "Hello", "World!");
+    printf("++++++++++++++++++++++++\n");
 
-    std::optional<std::string> word = ox::hashmap::get<std::string, std::string>(map, "Buzz");
+    printf("++++++++++++++++++++++++\n");
+    ox::hashmap::set<std::string, std::string>(map, "Ping", "Bass");
+    printf("++++++++++++++++++++++++\n");
+    printf("++++++++++++++++++++++++\n");
+    ox::hashmap::set<std::string, std::string>(map, "Ror!", "OmegaRor!");
+    printf("++++++++++++++++++++++++\n");
 
-    printf("Value: %s\n", word.value().c_str());
+    std::optional<std::string> word = ox::hashmap::get<std::string, std::string>(map, "Ping");
+    //std::optional<std::string> word = ox::hashmap::get<std::string, std::string>(map, "Hello");
 
+    if (word.has_value()) {
+        printf("Value: %s\n", word.value().c_str());
+    }
 
     return 0;   
 }
