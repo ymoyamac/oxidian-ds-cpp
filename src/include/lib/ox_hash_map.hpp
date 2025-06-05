@@ -5,7 +5,7 @@
 
 namespace ox::hashmap {
 
-    const uint INITIAL_CAPACITY = 5;
+    const uint INITIAL_CAPACITY = 64;
     const double LOAD_FACTOR = 0.75;
     
     template<typename K, typename V>
@@ -34,29 +34,23 @@ namespace ox::hashmap {
     template<typename K, typename V>
     void set(HashMap<K, V>* map, K key, V value) {
         size_t index = hash(key);
-        ox::container::Container<K, V>* on_use = map->container[index];
 
-        if (on_use == nullptr) {
-            printf(" >> Hashmap is empty...\n");
-            printf("%lu: { \"%s\": \"%s\" }\n", index, key.c_str(), value.c_str());
+        if (map->container[index] == nullptr) {
             ox::container::Container<K, V>* new_container = ox::container::init<K, V>();
             ox::container::push_back(new_container, key, value);
             map->container[index] = new_container;
+            ox::container::fmt(map->container[index], index);
             return;
         } else {
-            ox::bucket::Bucket<K, V>* bucket = ox::container::get(map->container[index], key);
-            
-            if (bucket->key == key) {
-                printf(" >> There is one more...\n");
-                printf("%lu: { \"%s\": \"%s\" }\n", index, key.c_str(), value.c_str());
-                ox::container::remove(map->container[index], key);
+            std::pair<ox::bucket::Bucket<K, V>*, int> bucket = ox::container::get(map->container[index], key);
+            if (bucket.first->key == key) {
+                ox::container::remove(map->container[index], key, bucket.second);
                 ox::container::push_back(map->container[index], key, value);
+                ox::container::fmt(map->container[index], index);
                 return;
             }
-
-            printf(" >> Appending new element...\n");
-            printf("%lu: { \"%s\": \"%s\" }\n", index, key.c_str(), value.c_str());
-            ox::container::push_back(on_use, key, value);
+            ox::container::push_back(map->container[index], key, value);
+            ox::container::fmt(map->container[index], index);
             return;
         }
 
@@ -72,12 +66,9 @@ namespace ox::hashmap {
             return {};
         }
 
-        ox::bucket::Bucket<K, V>* bucket = ox::container::get(map->container[index], key);
-        V value = bucket->value;
+        std::pair<ox::bucket::Bucket<K, V>*, int> bucket = ox::container::get(map->container[index], key);
+        V value = bucket.first->value;
         return std::optional<V>{value};
-
-        //ox::bucket::Bucket<K, V>* bucket = map->container[index];
-        
     }
     
 }

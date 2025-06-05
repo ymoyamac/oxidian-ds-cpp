@@ -10,9 +10,17 @@ int main() {
     printf("++++++++++++++++++++++++\n");
     ox::hashmap::set<std::string, std::string>(map, "Ping", "Pong");
     printf("++++++++++++++++++++++++\n");
-    ox::hashmap::set<std::string, std::string>(map, "Ping", "Bass");
+    ox::hashmap::set<std::string, std::string>(map, "Buzz", "Bass");
+    printf("++++++++++++++++++++++++\n");
     //ox::hashmap::set<std::string, std::string>(map, "Hello", "Bass");
-    //ox::hashmap::set<std::string, std::string>(map, "Hello", "World!");
+    ox::hashmap::set<std::string, std::string>(map, "Hello", "World!");
+    printf("++++++++++++++++++++++++\n");
+
+    printf("++++++++++++++++++++++++\n");
+    ox::hashmap::set<std::string, std::string>(map, "Ping", "Bass");
+    printf("++++++++++++++++++++++++\n");
+    printf("++++++++++++++++++++++++\n");
+    ox::hashmap::set<std::string, std::string>(map, "Ror!", "OmegaRor!");
     printf("++++++++++++++++++++++++\n");
 
     std::optional<std::string> word = ox::hashmap::get<std::string, std::string>(map, "Ping");

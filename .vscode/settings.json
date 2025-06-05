@@ -48,6 +48,8 @@
         "stack": "cpp",
         "unordered_map": "cpp",
         "variant": "cpp",
-        "__config": "cpp"
+        "__config": "cpp",
+        "__assertion_handler": "cpp",
+        "algorithm": "cpp"
     }
 }
