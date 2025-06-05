@@ -29,15 +29,11 @@ namespace ox::container {
 
     template<typename K, typename V>
     void push_back(Container<K, V>* container, K &key, V &value) {
-
         ox::bucket::Bucket<K, V>* new_bucket = ox::bucket::init<K, V>(key, value);
-
         if (container->head == nullptr && container->tail == nullptr) {
-            printf("Container is empty...\n");
             container->head = new_bucket;
             container->tail = new_bucket;
         } else {
-            printf("Appending new bucket...\n");
             container->tail->next = new_bucket;
             container->tail = new_bucket;
         }
@@ -46,16 +42,39 @@ namespace ox::container {
 
     template<typename K, typename V>
     ox::bucket::Bucket<K, V>* get(Container<K, V>* container, K &key) {
+        printf(" >> Get element...\n");
         ox::bucket::Bucket<K, V>* iter = ox::bucket::init<K, V>();
         iter = container->head;
-        while (iter->key != key) {
-            printf("Iterating... { \"%s\": \"%s\" }\n", iter->key.c_str(), iter->value.c_str());
+        while (iter->next != nullptr && iter->key != key) {
             iter = iter->next;
         }
         //Devuelve el iterador donde se quedo
+        printf(" >> Iter { \"%s\": \"%s\" }\n", iter->key.c_str(), iter->value.c_str());
         return iter;
     }
-    
+
+    template<typename K, typename V>
+    ox::bucket::Bucket<K, V>* get_first(Container<K, V>* container) {
+        ox::bucket::Bucket<K, V>* tmp = container->head;
+        tmp->next = nullptr;
+        return tmp;
+    }
+
+    template<typename K, typename V>
+    void remove(Container<K, V>* container, K &key) {
+        printf(" >> Removing element...\n");
+        ox::bucket::Bucket<K, V>* tmp = ox::bucket::init<K, V>();
+        ox::bucket::Bucket<K, V>* iter = container->head;
+        while (iter->next != nullptr && iter->next->key != key) {
+            iter = iter->next;
+        }
+        //En este punto iter vale lo que vale el bucket que estamos buscando por la llave
+        //menos uno
+        tmp = iter->next->next;
+        iter->next = tmp;
+        container->size -= 1;
+
+    }
 }
 
 #endif
