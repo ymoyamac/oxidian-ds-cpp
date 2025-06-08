@@ -39,15 +39,17 @@ int main() {
     //Getting hashmap size
     printf("Size: %lu\n", ox::hashmap::size(map));
 
-    //Removing elements
-    printf("++++++++++++++++++++++++\n");
-    ox::hashmap::remove<std::string, std::string>(map, "Ror!");
-    printf("++++++++++++++++++++++++\n");
-    ox::hashmap::remove<std::string, std::string>(map, "Buzz");
-    printf("++++++++++++++++++++++++\n");
+    std::vector<std::string> keys = ox::hashmap::unorder_keys(map);
+    printf("{");
+    for (size_t i = 0; i < keys.size(); i++) {
+        printf("%s", keys[i].c_str());
+        if (i != keys.size() - 1) {
+            printf(", ");
+        }
+    }
+    printf("}\n");
 
-    //Getting hashmap size
-    printf("Size: %lu\n", ox::hashmap::size(map));
+    
 
     return 0;   
 }

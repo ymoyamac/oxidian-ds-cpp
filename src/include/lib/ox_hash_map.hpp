@@ -10,7 +10,7 @@ namespace ox::hashmap {
     
     template<typename K, typename V>
     struct HashMap {
-        std::array<ox::container::Container<K, V>*, INITIAL_CAPACITY> container;
+        std::array<ox::container::Container<K, V>*, INITIAL_CAPACITY> containers;
         size_t capacity = INITIAL_CAPACITY;
         size_t size = 0;
     };
@@ -26,7 +26,7 @@ namespace ox::hashmap {
     HashMap<K, V>* create_map() {
         HashMap<K, V>* map = (HashMap<K, V>*) std::malloc(sizeof(HashMap<K, V>));
         for (int i = 0; i <= map->capacity; i++) {
-            map->container[i] = nullptr;
+            map->containers[i] = nullptr;
         }
         return map;
     }
@@ -37,24 +37,37 @@ namespace ox::hashmap {
     }
 
     template<typename K, typename V>
+    void fmt(HashMap<K, V>* map) {
+        for (int i = 0; i < map->containers.size(); i++) {
+            if (map->containers[i] == nullptr) {
+                continue;
+            }
+            printf("Pos: %i\n", i);
+            ox::container::fmt(map->containers[i], i);
+            printf("\n");
+        }
+        
+    }
+
+    template<typename K, typename V>
     void set(HashMap<K, V>* map, K key, V value) {
         size_t index = hash(key);
 
-        if (map->container[index] == nullptr) {
+        if (map->containers[index] == nullptr) {
             ox::container::Container<K, V>* new_container = ox::container::init<K, V>();
             ox::container::push_back(new_container, key, value);
-            map->container[index] = new_container;
-            ox::container::fmt(map->container[index], index);
+            map->containers[index] = new_container;
+            ox::container::fmt(map->containers[index], index);
         } else {
-            std::pair<ox::bucket::Bucket<K, V>*, int> bucket = ox::container::get(map->container[index], key);
+            std::pair<ox::bucket::Bucket<K, V>*, int> bucket = ox::container::get(map->containers[index], key);
             if (bucket.first->key == key) {
-                ox::container::remove(map->container[index], key, bucket.second);
-                ox::container::push_back(map->container[index], key, value);
-                ox::container::fmt(map->container[index], index);
+                ox::container::remove(map->containers[index], key, bucket.second);
+                ox::container::push_back(map->containers[index], key, value);
+                ox::container::fmt(map->containers[index], index);
                 return;
             }
-            ox::container::push_back(map->container[index], key, value);
-            ox::container::fmt(map->container[index], index);
+            ox::container::push_back(map->containers[index], key, value);
+            ox::container::fmt(map->containers[index], index);
         }
         map->size += 1;
 
@@ -65,12 +78,12 @@ namespace ox::hashmap {
         size_t index = hash(key);
         printf("Searching: (%lu) %s\n", index, key.c_str());
 
-        if (map->container[index] == nullptr) {
+        if (map->containers[index] == nullptr) {
             printf("There is no element for this key...\n");
             return {};
         }
 
-        std::pair<ox::bucket::Bucket<K, V>*, int> bucket = ox::container::get(map->container[index], key);
+        std::pair<ox::bucket::Bucket<K, V>*, int> bucket = ox::container::get(map->containers[index], key);
         V value = bucket.first->value;
         return std::optional<V>{value};
     }
@@ -79,23 +92,43 @@ namespace ox::hashmap {
     void remove(HashMap<K, V>* map, K key) {
         size_t index = hash(key);
         printf("Searching: (%lu) %s\n", index, key.c_str());
-
-        if (map->container[index] == nullptr) {
+        ox::container::Container<K, V>* container = map->containers[index];
+        if (container == nullptr) {
             printf("There is no element for this key...\n");
         } else {
-            if (ox::container::size(map->container[index]) == 1) {
-                ox::container::remove(map->container[index], key, 0);
-                free(map->container[index]);
+            if (ox::container::size(container) == 1) {
+                ox::container::remove(container, key, 0);
+                free(container);
             } else {
-                int idx = ox::container::get_index(map->container[index], key);
-                ox::container::remove(map->container[index], key, idx);
+                int idx = ox::container::get_index(container, key);
+                printf("Indexing... (%i)", idx);
+                ox::container::remove(container, key, idx);
             }
         }
 
         map->size -= 1;
     }
-    
-    
+
+    template<typename K, typename V>
+    std::vector<K> unorder_keys(HashMap<K, V>* map) {
+        std::vector<K> keys;
+        for(int i = 0; i < map->containers.size(); i++) {
+            if (map->containers[i] == nullptr) {
+                continue;
+            }
+            if (ox::container::size(map->containers[i]) == 1) {
+                K key = map->containers[i]->head->key;
+                keys.push_back(key);
+            } else {
+                ox::bucket::Bucket<K, V>* iter = map->containers[i]->head;
+                while (iter) {
+                    keys.push_back(iter->key);
+                    iter = iter->next;
+                }
+            }
+        }
+        return keys;
+    }
 }
 
 #endif

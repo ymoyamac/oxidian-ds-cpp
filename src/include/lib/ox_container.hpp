@@ -41,13 +41,12 @@ namespace ox::container {
     int get_index(Container<K, V>* container, K key) {
 
         if (container == nullptr) {
-            printf("Por aquí paso...\n");
             return -1;
         }
         int index = 0;
         ox::bucket::Bucket<K, V>* iter = ox::bucket::init<K, V>();
         iter = container->head;
-        while (iter->key != key) {
+        while (iter->next != nullptr && iter->key != key) {
             iter = iter->next;
             index++;
         }
@@ -109,7 +108,10 @@ namespace ox::container {
 
     template<typename K, typename V>
     void remove(Container<K, V>* container, K &key, int index) {
-        
+        if (container == nullptr) {
+            fprintf(stderr, "Error could not allocate memory in the system\n");
+            return;
+        }
         if (!container || index < 0 || index >= container->size) {
             fprintf(stderr, "Error position not valid\n");
             return;
@@ -122,19 +124,18 @@ namespace ox::container {
             container->size = 0;
             return;
         }
-        ox::bucket::Bucket<K, V>* iter = ox::bucket::init<K, V>();
-        ox::bucket::Bucket<K, V>* tmp = ox::bucket::init<K, V>();
         if (index == 0) {
+            printf("por aqui paso\n");
+            printf("por aqui paso %s\n", container->head->key.c_str());
+
             container->head = container->head->next;
-            free(iter);
-            free(tmp);
-            iter = nullptr;
-            tmp = nullptr;
+            container->size -= 1;
             return;
         } else {
+            ox::bucket::Bucket<K, V>* iter = ox::bucket::init<K, V>();
+            ox::bucket::Bucket<K, V>* tmp = ox::bucket::init<K, V>();
             iter = container->head;
-            for (size_t i = 0; i < index - 1; i++)
-            {
+            for (size_t i = 0; i < index - 1; i++) {
                 iter = iter->next;
             }
             tmp = iter->next->next;
@@ -143,7 +144,6 @@ namespace ox::container {
             if (index == container->size - 1) {
                 container->tail = tmp;
             }
-            container->size -= 1;
             return;
         }
     }

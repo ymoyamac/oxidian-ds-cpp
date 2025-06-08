@@ -12,41 +12,18 @@ int main() {
     printf("++++++++++++++++++++++++\n");
     ox::hashmap::set<std::string, std::string>(map, "Buzz", "Bass");
     printf("++++++++++++++++++++++++\n");
-    ox::hashmap::set<std::string, std::string>(map, "Hello", "World!");
-    printf("++++++++++++++++++++++++\n");
-    ox::hashmap::set<std::string, std::string>(map, "Hash", "Table");
+    ox::hashmap::set<std::string, std::string>(map, "Buzz", "World!");
     printf("++++++++++++++++++++++++\n");
 
-    //Overwriting keys
-    printf("++++++++++++++++++++++++\n");
-    ox::hashmap::set<std::string, std::string>(map, "Ping", "Bass");
-    printf("++++++++++++++++++++++++\n");
-    ox::hashmap::set<std::string, std::string>(map, "Ror!", "OmegaRor!");
-    printf("++++++++++++++++++++++++\n");
+    ox::hashmap::fmt(map);
 
-    //Getting the key value
-    std::optional<std::string> hello = ox::hashmap::get<std::string, std::string>(map, "Hello");
-    if (hello.has_value()) {
-        printf("Value: %s\n", hello.value().c_str()); // -> Value: World!
-    }
 
-    //Getting the last value inserted
-    std::optional<std::string> ping = ox::hashmap::get<std::string, std::string>(map, "Ping");
-    if (ping.has_value()) {
-        printf("Value: %s\n", ping.value().c_str()); // -> Value: Bass
-    }
-    
-    //Getting hashmap size
-    printf("Size: %lu\n", ox::hashmap::size(map));
-
-    //Removing elements
     printf("++++++++++++++++++++++++\n");
     ox::hashmap::remove<std::string, std::string>(map, "Ror!");
     printf("++++++++++++++++++++++++\n");
-    ox::hashmap::remove<std::string, std::string>(map, "Buzz");
-    printf("++++++++++++++++++++++++\n");
 
-    //Getting hashmap size
+    ox::hashmap::fmt(map);
+    
     printf("Size: %lu\n", ox::hashmap::size(map));
 
     return 0;   
