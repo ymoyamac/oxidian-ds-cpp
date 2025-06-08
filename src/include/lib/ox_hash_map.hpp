@@ -5,7 +5,7 @@
 
 namespace ox::hashmap {
 
-    const uint INITIAL_CAPACITY = 64;
+    const uint INITIAL_CAPACITY = 5;
     const double LOAD_FACTOR = 0.75;
     
     template<typename K, typename V>
@@ -32,6 +32,11 @@ namespace ox::hashmap {
     }
 
     template<typename K, typename V>
+    size_t size(HashMap<K, V>* map) {
+        return map->size;
+    }
+
+    template<typename K, typename V>
     void set(HashMap<K, V>* map, K key, V value) {
         size_t index = hash(key);
 
@@ -40,7 +45,6 @@ namespace ox::hashmap {
             ox::container::push_back(new_container, key, value);
             map->container[index] = new_container;
             ox::container::fmt(map->container[index], index);
-            return;
         } else {
             std::pair<ox::bucket::Bucket<K, V>*, int> bucket = ox::container::get(map->container[index], key);
             if (bucket.first->key == key) {
@@ -51,8 +55,8 @@ namespace ox::hashmap {
             }
             ox::container::push_back(map->container[index], key, value);
             ox::container::fmt(map->container[index], index);
-            return;
         }
+        map->size += 1;
 
     }
 
@@ -61,7 +65,7 @@ namespace ox::hashmap {
         size_t index = hash(key);
         printf("Searching: (%lu) %s\n", index, key.c_str());
 
-        if (map->container[index] == NULL) {
+        if (map->container[index] == nullptr) {
             printf("There is no element for this key...\n");
             return {};
         }
@@ -70,6 +74,27 @@ namespace ox::hashmap {
         V value = bucket.first->value;
         return std::optional<V>{value};
     }
+
+    template<typename K, typename V>
+    void remove(HashMap<K, V>* map, K key) {
+        size_t index = hash(key);
+        printf("Searching: (%lu) %s\n", index, key.c_str());
+
+        if (map->container[index] == nullptr) {
+            printf("There is no element for this key...\n");
+        } else {
+            if (ox::container::size(map->container[index]) == 1) {
+                ox::container::remove(map->container[index], key, 0);
+                free(map->container[index]);
+            } else {
+                int idx = ox::container::get_index(map->container[index], key);
+                ox::container::remove(map->container[index], key, idx);
+            }
+        }
+
+        map->size -= 1;
+    }
+    
     
 }
 

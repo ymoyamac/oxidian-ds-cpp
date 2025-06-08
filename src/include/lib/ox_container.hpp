@@ -28,6 +28,35 @@ namespace ox::container {
     }
 
     template<typename K, typename V>
+    size_t size(Container<K, V>* container) {
+        return container->size;
+    }
+
+    template<typename K, typename V>
+    size_t is_empty(Container<K, V>* container) {
+        return container->size == 0;
+    }
+
+    template<typename K, typename V>
+    int get_index(Container<K, V>* container, K key) {
+
+        if (container == nullptr) {
+            printf("Por aquí paso...\n");
+            return -1;
+        }
+        int index = 0;
+        ox::bucket::Bucket<K, V>* iter = ox::bucket::init<K, V>();
+        iter = container->head;
+        while (iter->key != key) {
+            iter = iter->next;
+            index++;
+        }
+        free(iter);
+        iter = nullptr;
+        return index;
+    }
+
+    template<typename K, typename V>
     void fmt(Container<K, V>* container, int index) {
         ox::bucket::Bucket<K, V>* iter = ox::bucket::init<K, V>();
         iter = container->head;
@@ -85,7 +114,7 @@ namespace ox::container {
             fprintf(stderr, "Error position not valid\n");
             return;
         }
-        
+
         printf(" >> Removing [\"%s\"] at pos (%i)...\n", key.c_str(), index);
         if (index == 0 && container->size == 1) {
             container->head = nullptr;
