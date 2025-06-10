@@ -62,7 +62,7 @@ namespace ox::linked_list {
      */
     void drop(linkedlist_t* list);
     int size(linkedlist_t* list);
-    void rprint_list(linkedlist_t* list);
+    void fmt(linkedlist_t* list);
 
     /**
      * Inserts a node at the end of the list, if the list is empty it inserts it
