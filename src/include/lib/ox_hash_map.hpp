@@ -10,7 +10,7 @@ namespace ox::hashmap {
     
     template<typename K, typename V>
     struct HashMap {
-        std::array<ox::set::Cluster<K, V>*, INITIAL_CAPACITY> containers;
+        std::array<ox::cluster::Cluster<K, V>*, INITIAL_CAPACITY> containers;
         size_t capacity = INITIAL_CAPACITY;
         size_t size = 0;
     };

@@ -3,7 +3,7 @@
 
 #include <oxidian.hpp>
 
-namespace ox::bucket {
+namespace ox::entry {
 
     template<typename K, typename V>
     struct Entry {

@@ -3,12 +3,12 @@
 
 #include <oxidian.hpp>
 
-namespace ox::set {
+namespace ox::cluster {
 
     template<typename K, typename V>
     struct Cluster {
-        std::unique_ptr<bucket::Entry<K, V>> head = nullptr;
-        bucket::Entry<K, V>* tail = nullptr;
+        std::unique_ptr<entry::Entry<K, V>> head = nullptr;
+        entry::Entry<K, V>* tail = nullptr;
         int size = 0;
     };
 
@@ -25,7 +25,7 @@ namespace ox::set {
 
     template<typename K, typename V>
     void fmt(Cluster<K, V> &container) {
-        bucket::Entry<K, V>* iter = container.head.get();
+        entry::Entry<K, V>* iter = container.head.get();
         printf("Cluster{ \n");
         while (iter) {
             printf("  Entry{ \"%s\": \"%s\" }", iter->key.c_str(), iter->value.c_str());
@@ -41,7 +41,7 @@ namespace ox::set {
     template<typename K, typename V>
     void push_back(Cluster<K, V> &container, const K &key, const V &value) {
         
-        std::unique_ptr<bucket::Entry<K, V>> new_bucket = bucket::init<K, V>(key, value);
+        std::unique_ptr<entry::Entry<K, V>> new_bucket = entry::init<K, V>(key, value);
         
         if (container.head == nullptr && container.tail == nullptr) {
             printf(" >> The list is empty...\n");
@@ -58,10 +58,10 @@ namespace ox::set {
     }
     
     template<typename K, typename V>
-    std::pair<const bucket::Entry<K, V>*, int> get(Cluster<K, V> &container, const K &key) {
+    std::pair<const entry::Entry<K, V>*, int> get(Cluster<K, V> &container, const K &key) {
 
         int counter = 0;
-        const bucket::Entry<K, V>* iter = container.head.get();
+        const entry::Entry<K, V>* iter = container.head.get();
         while (iter->next != nullptr && iter->key != key) {
             counter++;
             iter = iter->next.get();
@@ -70,15 +70,13 @@ namespace ox::set {
     }
 
     template<typename K, typename V>
-    std::optional<std::unique_ptr<bucket::Entry<K, V>>> pop(Cluster<K, V> &container) {
+    std::optional<std::unique_ptr<entry::Entry<K, V>>> pop(Cluster<K, V> &container) {
 
         if (!container.head) {
             printf(" >> The list is empty...\n");
             return {};
         }
-        K key = container.head->key;
-        V value = container.head->value;
-        std::unique_ptr<bucket::Entry<K, V>> popped_bucket = std::move(container.head);
+        std::unique_ptr<entry::Entry<K, V>> popped_bucket = std::move(container.head);
         container.head = std::move(popped_bucket->next);
 
         if (!container.head) {
@@ -105,7 +103,7 @@ namespace ox::set {
             pop(container);
         }
 
-        bucket::Entry<K, V>* iter = container.head.get();
+        entry::Entry<K, V>* iter = container.head.get();
         while (iter->next != nullptr && iter->next->key != key) {
             iter = iter->next.get();
         }
@@ -113,13 +111,12 @@ namespace ox::set {
             printf(">> Key not found...\n");
             return;
         }
-        std::unique_ptr<bucket::Entry<K, V>> node_to_remove = std::move(iter->next);
+        std::unique_ptr<entry::Entry<K, V>> node_to_remove = std::move(iter->next);
         iter->next = std::move(node_to_remove->next);
         if (!iter->next) {
             container.tail = iter;
         }
         container.size--;
-
     }
 }
 
