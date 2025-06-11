@@ -2,7 +2,7 @@
 CC = g++
 
 # Compiler options
-CFLAGS = -std=c++17 -I src/include
+CFLAGS = -std=c++20 -I src/include
 OFLAGS = -o
 #OFLAGS = -Wall -Wextra -o
 
