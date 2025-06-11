@@ -1,5 +1,5 @@
-#ifndef _OX_BUCKET_H
-#define _OX_BUCKET_H
+#ifndef _OX_ENTRY_H
+#define _OX_ENTRY_H
 
 #include <oxidian.hpp>
 
@@ -20,17 +20,17 @@ namespace ox::entry {
 
     template<typename K, typename V>
     std::unique_ptr<Entry<K, V>> init(const K &key,const V &value) {
-        std::unique_ptr<Entry<K, V>> bucket_ptr = std::make_unique<Entry<K, V>>();
-        bucket_ptr->key = key;
-        bucket_ptr->value = value;
-        bucket_ptr->is_taken = true;
-        bucket_ptr->next = nullptr;
-        return bucket_ptr;
+        std::unique_ptr<Entry<K, V>> entry_ptr = std::make_unique<Entry<K, V>>();
+        entry_ptr->key = key;
+        entry_ptr->value = value;
+        entry_ptr->is_taken = true;
+        entry_ptr->next = nullptr;
+        return entry_ptr;
     }
 
     template<typename K, typename V>
-    void fmt(const Entry<K, V> &bucket) {
-        printf("Entry{ \"%s\": \"%s\" }\n", bucket.key.c_str(), bucket.value.c_str());
+    void fmt(const Entry<K, V> &entry) {
+        printf("Entry{ \"%s\": \"%s\" }\n", entry.key.c_str(), entry.value.c_str());
     }
 }
 

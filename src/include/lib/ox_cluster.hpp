@@ -1,5 +1,5 @@
-#ifndef _OX_CONTAINER_H
-#define _OX_CONTAINER_H
+#ifndef _OX_CLUSTER_H
+#define _OX_CLUSTER_H
 
 #include <oxidian.hpp>
 
@@ -14,18 +14,18 @@ namespace ox::cluster {
 
     template<typename K, typename V>
     std::unique_ptr<Cluster<K, V>> init() {
-        std::unique_ptr<Cluster<K, V>> container_ptr = std::make_unique<Cluster<K, V>>();
-        return container_ptr;
+        std::unique_ptr<Cluster<K, V>> cluster_ptr = std::make_unique<Cluster<K, V>>();
+        return cluster_ptr;
     }
 
     template<typename K, typename V>
-    int size(Cluster<K, V> &container) {
-        return container.size;
+    int size(Cluster<K, V> &cluster) {
+        return cluster.size;
     }
 
     template<typename K, typename V>
-    void fmt(Cluster<K, V> &container) {
-        entry::Entry<K, V>* iter = container.head.get();
+    void fmt(Cluster<K, V> &cluster) {
+        entry::Entry<K, V>* iter = cluster.head.get();
         printf("Cluster{ \n");
         while (iter) {
             printf("  Entry{ \"%s\": \"%s\" }", iter->key.c_str(), iter->value.c_str());
@@ -39,29 +39,29 @@ namespace ox::cluster {
     }
 
     template<typename K, typename V>
-    void push_back(Cluster<K, V> &container, const K &key, const V &value) {
+    void push_back(Cluster<K, V> &cluster, const K &key, const V &value) {
         
-        std::unique_ptr<entry::Entry<K, V>> new_bucket = entry::init<K, V>(key, value);
+        std::unique_ptr<entry::Entry<K, V>> new_entry = entry::init<K, V>(key, value);
         
-        if (container.head == nullptr && container.tail == nullptr) {
+        if (cluster.head == nullptr && cluster.tail == nullptr) {
             printf(" >> The list is empty...\n");
-            container.head = std::move(new_bucket);
-            container.tail = container.head.get();
+            cluster.head = std::move(new_entry);
+            cluster.tail = cluster.head.get();
         } else {
             printf(" >> Pushing...\n");
-            container.tail->next = std::move(new_bucket);
-            container.tail = container.tail->next.get();
+            cluster.tail->next = std::move(new_entry);
+            cluster.tail = cluster.tail->next.get();
         }
 
-        container.size++;
+        cluster.size++;
 
     }
     
     template<typename K, typename V>
-    std::pair<const entry::Entry<K, V>*, int> get(Cluster<K, V> &container, const K &key) {
+    std::pair<const entry::Entry<K, V>*, int> get(Cluster<K, V> &cluster, const K &key) {
 
         int counter = 0;
-        const entry::Entry<K, V>* iter = container.head.get();
+        const entry::Entry<K, V>* iter = cluster.head.get();
         while (iter->next != nullptr && iter->key != key) {
             counter++;
             iter = iter->next.get();
@@ -70,40 +70,40 @@ namespace ox::cluster {
     }
 
     template<typename K, typename V>
-    std::optional<std::unique_ptr<entry::Entry<K, V>>> pop(Cluster<K, V> &container) {
+    std::optional<std::unique_ptr<entry::Entry<K, V>>> pop(Cluster<K, V> &cluster) {
 
-        if (!container.head) {
+        if (!cluster.head) {
             printf(" >> The list is empty...\n");
             return {};
         }
-        std::unique_ptr<entry::Entry<K, V>> popped_bucket = std::move(container.head);
-        container.head = std::move(popped_bucket->next);
+        std::unique_ptr<entry::Entry<K, V>> popped_entry = std::move(cluster.head);
+        cluster.head = std::move(popped_entry->next);
 
-        if (!container.head) {
-            container.tail = nullptr;
+        if (!cluster.head) {
+            cluster.tail = nullptr;
         }
     
-        container.size--;
-        popped_bucket->next = nullptr;
-        return std::make_optional(std::move(popped_bucket));
+        cluster.size--;
+        popped_entry->next = nullptr;
+        return std::make_optional(std::move(popped_entry));
 
     }
     
     template<typename K, typename V>
-    void remove(Cluster<K, V> &container, const K &key) {
+    void remove(Cluster<K, V> &cluster, const K &key) {
         printf(" >> Removing...\n");
 
-        if (!container.head) {
+        if (!cluster.head) {
             printf(" >> The list is empty...\n");
             return;
         }
 
-        if (container.head->key == key) {
+        if (cluster.head->key == key) {
             printf(" >> Removing at index 0...\n");
-            pop(container);
+            pop(cluster);
         }
 
-        entry::Entry<K, V>* iter = container.head.get();
+        entry::Entry<K, V>* iter = cluster.head.get();
         while (iter->next != nullptr && iter->next->key != key) {
             iter = iter->next.get();
         }
@@ -114,9 +114,9 @@ namespace ox::cluster {
         std::unique_ptr<entry::Entry<K, V>> node_to_remove = std::move(iter->next);
         iter->next = std::move(node_to_remove->next);
         if (!iter->next) {
-            container.tail = iter;
+            cluster.tail = iter;
         }
-        container.size--;
+        cluster.size--;
     }
 }
 
