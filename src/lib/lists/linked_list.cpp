@@ -39,7 +39,7 @@ namespace ox::linked_list {
         return list->size;
     }
 
-    void rprint_list(linkedlist_t* list) {
+    void fmt(linkedlist_t* list) {
         int index = 0;
         ox::node::node_t* iter = ox::node::init(0);
         iter = list->head;

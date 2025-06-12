@@ -4,7 +4,7 @@ int main() {
 
     int first = 10;
     void* data = &first;
-    node::node_t* nn = node::init(data);
+    ox::node::node_t* nn = ox::node::init(data);
 
     printf("Data: %i", *(int*)nn->get_data(nn));
 

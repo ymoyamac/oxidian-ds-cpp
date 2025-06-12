@@ -10,10 +10,15 @@ namespace ox::hashmap {
     
     template<typename K, typename V>
     struct HashMap {
-        std::array<ox::container::Container<K, V>*, INITIAL_CAPACITY> container;
+        std::array<std::unique_ptr<cluster::Cluster<K, V>>, INITIAL_CAPACITY> containers;
         size_t capacity = INITIAL_CAPACITY;
         size_t size = 0;
     };
+
+    template<typename K, typename V>
+    std::unique_ptr<HashMap<K, V>> init() {
+        return std::make_unique<HashMap<K, V>>();
+    }
 
     size_t fbv1a(const std::string &key);
 
@@ -23,52 +28,25 @@ namespace ox::hashmap {
     }
 
     template<typename K, typename V>
-    HashMap<K, V>* create_map() {
-        HashMap<K, V>* map = (HashMap<K, V>*) std::malloc(sizeof(HashMap<K, V>));
-        for (int i = 0; i <= map->capacity; i++) {
-            map->container[i] = nullptr;
-        }
-        return map;
-    }
-
-    template<typename K, typename V>
-    void set(HashMap<K, V>* map, K key, V value) {
+    void set(HashMap<K, V> &hashmap, const K &key, const V &value) {
         size_t index = hash(key);
-
-        if (map->container[index] == nullptr) {
-            ox::container::Container<K, V>* new_container = ox::container::init<K, V>();
-            ox::container::push_back(new_container, key, value);
-            map->container[index] = new_container;
-            ox::container::fmt(map->container[index], index);
-            return;
-        } else {
-            std::pair<ox::bucket::Bucket<K, V>*, int> bucket = ox::container::get(map->container[index], key);
-            if (bucket.first->key == key) {
-                ox::container::remove(map->container[index], key, bucket.second);
-                ox::container::push_back(map->container[index], key, value);
-                ox::container::fmt(map->container[index], index);
-                return;
-            }
-            ox::container::push_back(map->container[index], key, value);
-            ox::container::fmt(map->container[index], index);
-            return;
+        if (!hashmap.containers[index]) {
+            hashmap.containers[index] = cluster::init<K, V>();
         }
+        cluster::push_back<K, V>(*hashmap.containers[index], key, value);
 
     }
 
     template<typename K, typename V>
-    std::optional<V> get(HashMap<K, V>* map, K key) {
+    std::optional<V> get(HashMap<K, V> &hashmap, const K &key) {
         size_t index = hash(key);
-        printf("Searching: (%lu) %s\n", index, key.c_str());
 
-        if (map->container[index] == NULL) {
-            printf("There is no element for this key...\n");
-            return {};
+        auto opt_entry = cluster::get<K, V>(*hashmap.containers[index], key);
+        if (!opt_entry) {
+            return std::nullopt;
         }
-
-        std::pair<ox::bucket::Bucket<K, V>*, int> bucket = ox::container::get(map->container[index], key);
-        V value = bucket.first->value;
-        return std::optional<V>{value};
+        const auto& [entry, _] = *opt_entry;
+        return entry->value;
     }
     
 }

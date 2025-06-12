@@ -50,6 +50,7 @@
         "variant": "cpp",
         "__config": "cpp",
         "__assertion_handler": "cpp",
-        "algorithm": "cpp"
+        "algorithm": "cpp",
+        "version": "cpp"
     }
 }
