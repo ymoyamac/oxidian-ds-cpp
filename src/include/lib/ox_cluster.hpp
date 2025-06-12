@@ -14,8 +14,7 @@ namespace ox::cluster {
 
     template<typename K, typename V>
     std::unique_ptr<Cluster<K, V>> init() {
-        std::unique_ptr<Cluster<K, V>> cluster_ptr = std::make_unique<Cluster<K, V>>();
-        return cluster_ptr;
+        return std::make_unique<Cluster<K, V>>();
     }
 
     template<typename K, typename V>
@@ -40,15 +39,21 @@ namespace ox::cluster {
 
     template<typename K, typename V>
     void push_back(Cluster<K, V> &cluster, const K &key, const V &value) {
+        printf(" >> Pushing...\n");
+
+        if (cluster.size > 1) {
+            std::optional<std::pair<const entry::Entry<K, V>*, int>> opt_entry = get(cluster, key);
+            if (opt_entry.has_value()) {
+                remove(cluster, key);
+            }
+        }
         
         std::unique_ptr<entry::Entry<K, V>> new_entry = entry::init<K, V>(key, value);
         
         if (cluster.head == nullptr && cluster.tail == nullptr) {
-            printf(" >> The list is empty...\n");
             cluster.head = std::move(new_entry);
             cluster.tail = cluster.head.get();
         } else {
-            printf(" >> Pushing...\n");
             cluster.tail->next = std::move(new_entry);
             cluster.tail = cluster.tail->next.get();
         }
@@ -58,19 +63,23 @@ namespace ox::cluster {
     }
     
     template<typename K, typename V>
-    std::pair<const entry::Entry<K, V>*, int> get(Cluster<K, V> &cluster, const K &key) {
-
+    std::optional<std::pair<const entry::Entry<K, V>*, int>> get(Cluster<K, V> &cluster, const K &key) {
+        printf(" >> Getting...\n");
         int counter = 0;
         const entry::Entry<K, V>* iter = cluster.head.get();
         while (iter->next != nullptr && iter->key != key) {
             counter++;
             iter = iter->next.get();
         }
-        return std::pair{iter, counter};
+        if (iter-> key != key) {
+            return {};
+        }
+        return std::optional{std::pair{iter, counter}};
     }
 
     template<typename K, typename V>
     std::optional<std::unique_ptr<entry::Entry<K, V>>> pop(Cluster<K, V> &cluster) {
+        printf(" >> Pop...\n");
 
         if (!cluster.head) {
             printf(" >> The list is empty...\n");

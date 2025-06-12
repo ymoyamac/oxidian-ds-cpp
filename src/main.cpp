@@ -3,41 +3,30 @@
 int main() {
 
     using namespace ox;
-    
-    std::unique_ptr<cluster::Cluster<std::string, std::string>> container = cluster::init<std::string, std::string>();
-    printf("Address: %p\n", &container);
-
     std::string key = "Hello";
     std::string value = "World!";
-    std::string key1 = "Bizz";
+    std::string key1 = "Bazz";
     std::string value1 = "Buzz";
     std::string key2 = "Ping";
     std::string value2 = "Pong";
-    std::string key3 = "Next";
+    std::string key3 = "Next!";
     std::string value3 = "Node";
+    std::string value4 = "Rust";
+    std::unique_ptr<hashmap::HashMap<std::string, std::string>> map = hashmap::init<std::string, std::string>();
 
-    cluster::push_back<std::string, std::string>(*container, key, value);
-    cluster::push_back<std::string, std::string>(*container, key1, value1);
-    cluster::push_back<std::string, std::string>(*container, key2, value2);
-    cluster::push_back<std::string, std::string>(*container, key3, value3);
-
-    cluster::fmt<std::string, std::string>(*container);
-    auto pair = cluster::get<std::string, std::string>(*container, key2);
-    entry::fmt(*pair.first);
-    cluster::push_back<std::string, std::string>(*container, key2, value2);
-    cluster::fmt<std::string, std::string>(*container);
+    hashmap::set<std::string, std::string>(*map, key, value);
+    hashmap::set<std::string, std::string>(*map, key1, value1);
+    hashmap::set<std::string, std::string>(*map, key2, value2);
+    hashmap::set<std::string, std::string>(*map, key3, value3);
+    hashmap::set<std::string, std::string>(*map, key2, value4);
 
 
-    auto opt_popped = cluster::pop<std::string, std::string>(*container);
-    printf(" >> Pop...\n");
-    if (opt_popped.has_value()) {
-        entry::fmt<std::string, std::string>(*opt_popped.value().get());
+    auto res = hashmap::get<std::string, std::string>(*map, key3);
+    if (res.has_value()) {
+        printf("Value: %s\n", res.value().c_str());
     }
-    cluster::fmt<std::string, std::string>(*container);
-
-    cluster::remove<std::string, std::string>(*container, key3);
-    cluster::fmt<std::string, std::string>(*container);
 
 
-    return 0;   
+
+    return 0;
 }
