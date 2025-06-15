@@ -1,9 +1,9 @@
 #include "oxidian.hpp"
 
-namespace tree {
+namespace ox::tree {
     
     struct BinaryTree {
-        
+
     };
 
 
