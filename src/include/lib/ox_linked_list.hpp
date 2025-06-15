@@ -47,8 +47,8 @@ namespace ox::linked_list {
     typedef struct linkedlist_s linkedlist_t ;
 
     struct linkedlist_s {
-        node::node_t* head;
-        node::node_t* tail;
+        simple_node::node_t* head;
+        simple_node::node_t* tail;
         int size;
     };
 

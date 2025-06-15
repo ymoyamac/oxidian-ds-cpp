@@ -19,8 +19,8 @@
 namespace ox::queue {
 
     typedef struct {
-        node::node_t* front;
-        node::node_t* rear;
+        simple_node::node_t* front;
+        simple_node::node_t* rear;
         int size;
     } queue_t;
 

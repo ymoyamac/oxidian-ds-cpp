@@ -44,7 +44,7 @@
 
 #include <oxidian.hpp>
 
-namespace ox::node {
+namespace ox::simple_node {
 
     /**
      * Opaque type representing a generic node.

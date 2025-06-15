@@ -16,7 +16,7 @@ namespace ox::queue {
     }
 
     void enqueue(queue_t* queue, void* data) {
-        node::node_t* new_node = node::init(data);
+        simple_node::node_t* new_node = simple_node::init(data);
         if (queue->front == nullptr && queue->rear == nullptr) {
             printf("Queue is empty\n");
             queue->front = new_node;
