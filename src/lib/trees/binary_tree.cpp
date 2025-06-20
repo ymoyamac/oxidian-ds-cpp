@@ -2,9 +2,4 @@
 
 namespace ox::tree {
     
-    struct BinaryTree {
-
-    };
-
-
 } // namespace tree

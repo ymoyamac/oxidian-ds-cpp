@@ -19,13 +19,13 @@ TARGET = main.o
 
 # Dependencies and objects
 _DEPS = \
-    node.cpp \
+    simple_node.cpp \
     linked_list.cpp \
     queue.cpp \
     hash_map.cpp \
 
 DEPS = \
-    $(SRCDIR)/lib/nodes/node.cpp \
+    $(SRCDIR)/lib/nodes/simple_node.cpp \
     $(SRCDIR)/lib/lists/linked_list.cpp \
     $(SRCDIR)/lib/queues/queue.cpp \
     $(SRCDIR)/lib/hash/hash_map.cpp \

@@ -1,3 +1,6 @@
+#ifndef _OX_DOUBLE_NODE_H
+#define _OX_DOUBLE_NODE_H
+
 #include "oxidian.hpp"
 
 namespace ox::double_node {
@@ -5,8 +8,8 @@ namespace ox::double_node {
     template<typename T>
     struct DNode {
         std::unique_ptr<DNode<T>> left;
-        std::unique_ptr<DNode<T>> rigth;
-        T value;
+        std::unique_ptr<DNode<T>> right;
+        T data;
         bool is_leaf = true;
     };
 
@@ -16,16 +19,18 @@ namespace ox::double_node {
     }
 
     template<typename T>
-    std::unique_ptr<DNode<T>> init(const T& value) {
+    std::unique_ptr<DNode<T>> init(const T& data) {
         std::unique_ptr<DNode<T>> node = std::make_unique<DNode<T>>();
         node->left = nullptr;
-        node->rigth = nullptr;
-        node->value = value;
+        node->right = nullptr;
+        node->data = data;
         return node;
     }
 
     template<typename T>
     void fmt(DNode<T>& node) {
-        printf("  Node{ \"%s\": \"%s\" }", iter->key.c_str(), iter->value.c_str());
+        
     }
 }
+
+#endif

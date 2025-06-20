@@ -51,6 +51,8 @@
         "__config": "cpp",
         "__assertion_handler": "cpp",
         "algorithm": "cpp",
-        "version": "cpp"
+        "version": "cpp",
+        "memory": "cpp",
+        "complex": "cpp"
     }
 }

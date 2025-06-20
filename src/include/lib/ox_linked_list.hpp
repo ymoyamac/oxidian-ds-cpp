@@ -37,7 +37,7 @@
 #ifndef _OX_LINKEDLIST_H
 #define _OX_LINKEDLIST_H
 
-#include <oxidian.hpp>
+#include "oxidian.hpp"
 
 namespace ox::linked_list {
 
