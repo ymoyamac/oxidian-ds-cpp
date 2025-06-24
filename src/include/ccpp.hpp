@@ -16,4 +16,7 @@
 #define _CCPP_H
 
 #include <iostream>
+#include <queue>
+#include <cmath>
+#include <iomanip>
 #endif

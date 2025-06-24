@@ -3,7 +3,7 @@
 
 #include "oxidian.hpp"
 
-namespace ox::double_node {
+namespace ox::node {
 
     template<typename T>
     struct DNode {
