@@ -1,7 +1,7 @@
 #ifndef _OX_HASH_MAP_H
 #define _OX_HASH_MAP_H
 
-#include <oxidian.hpp>
+#include "oxidian.hpp"
 
 namespace ox::hashmap {
 

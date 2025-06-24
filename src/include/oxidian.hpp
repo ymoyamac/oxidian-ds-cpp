@@ -8,5 +8,7 @@
 #include "lib/ox_entry.hpp"
 #include "lib/ox_cluster.hpp"
 #include "lib/ox_hash_map.hpp"
+#include "lib/ox_double_node.hpp"
+#include "lib/ox_binary_tree.hpp"
 
 #endif

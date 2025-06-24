@@ -42,9 +42,9 @@
 #ifndef _OX_NODE_H
 #define _OX_NODE_H
 
-#include <oxidian.hpp>
+#include "oxidian.hpp"
 
-namespace ox::node {
+namespace ox::simple_node {
 
     /**
      * Opaque type representing a generic node.

@@ -1,7 +1,7 @@
 #ifndef _OX_ENTRY_H
 #define _OX_ENTRY_H
 
-#include <oxidian.hpp>
+#include "oxidian.hpp"
 
 namespace ox::entry {
 
